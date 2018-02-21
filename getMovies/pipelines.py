@@ -8,6 +8,9 @@
 import logging
 import re
 import urllib2
+import MySQLdb
+import chardet
+import sys
 class GetmoviesPipeline(object):
     def process_item(self, item, spider):
         #logging.critical(item)
@@ -19,8 +22,22 @@ class GetmoviesPipeline(object):
                 logging.critical(title)
                 logging.critical(seed)
                 f=urllib2.urlopen(seed)
-                with open(title,"wb") as code:
-                    logging.critical(f.read())
-                    #code.write(f.read())
+                ts="/Users/siwei/torrent/"
+                tt=ts+title.strip()
+                logging.critical(tt)
+                with open(tt,"wb") as code:
+                    code.write(f.read())
+                    db=MySQLdb.connect("192.168.1.16","root","root","movies")
+                    cursor=db.cursor()
+                    sql="INSERT INTO movie(url,title) VALUES ('%s','%s')" % (seed,title)
+                    logging.critical(sql)
+                    try:
+                        cursor.execute(sql)
+                        db.commit()
+                    except Exception,ex:
+                        logging.critical(ex,exc_info=1)
+                        db.rollback()
                 logging.critical("************************************")
+                db.close()
         return item
+
