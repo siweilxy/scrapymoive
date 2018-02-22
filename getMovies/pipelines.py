@@ -54,6 +54,15 @@ class GetmoviesPipeline(object):
     def process_item(self, item, spider):
         if spider.name == "haotor":
             self.processHaotorItem(item)
+        elif spider.name == "btttla":
+            title=item['title'][0]
+            seed= "https://www.bttt.la"+item['seed'][0]
+            logging.critical("+++++++++++++++++++++++++++++++++++++++++++")
+            logging.critical(spider.name)
+            logging.critical(title)
+            logging.critical(seed)
+            logging.critical("+++++++++++++++++++++++++++++++++++++++++++")
+
         return item
 
     def close_spider(self):
