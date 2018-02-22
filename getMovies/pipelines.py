@@ -16,7 +16,6 @@ class GetmoviesPipeline(object):
 
     def insertIndb(self,seed, title):
         logging.critical("************************************insert start************************************")
-
         cursor = self.db.cursor()
         sql = "INSERT INTO movie(url,title) VALUES ('%s','%s')" % (seed, title)
         logging.critical(sql)
@@ -26,12 +25,6 @@ class GetmoviesPipeline(object):
         except Exception, ex:
             logging.critical(ex, exc_info=1)
             self.db.rollback()
-
-            logging.critical(
-                "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!db connected!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-            self.db = MySQLdb.connect(host="192.168.1.16", port=3306, user="root", passwd="root",
-                                      db="movies", charset="utf8")
-
         logging.critical("************************************insert end************************************")
 
     def processHaotorItem(self,item):
