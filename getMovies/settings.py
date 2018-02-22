@@ -13,7 +13,7 @@ BOT_NAME = 'getMovies'
 
 SPIDER_MODULES = ['getMovies.spiders']
 NEWSPIDER_MODULE = 'getMovies.spiders'
-
+COMMANDS_MODULE = 'getMovies.commands'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'getMovies (+http://www.yourdomain.com)'

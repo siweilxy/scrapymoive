@@ -7,11 +7,10 @@
 
 import scrapy
 
-
 class GetmoviesItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
-    title=scrapy.Field()
-    link=scrapy.Field()
-    seed=scrapy.Field()
+    title = scrapy.Field()
+    link = scrapy.Field()
+    seed = scrapy.Field()
     pass

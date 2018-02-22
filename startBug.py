@@ -4,7 +4,7 @@ import os
 i=0
 while(1):
     print "*********************************************************"
-    os.system("scrapy crawl getMoive")
+    os.system("scrapy crawl haotor")
     print "*********************************************************"
     time.sleep(1)
     i=i+1

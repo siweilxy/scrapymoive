@@ -2,13 +2,13 @@ from getMovies.items import GetmoviesItem
 from scrapy.loader import ItemLoader
 from scrapy.http import Request
 from scrapy.loader.processors import MapCompose,Join
-from scrapy.spider import CrawlSpider,Rule
+from scrapy.spiders import CrawlSpider,Rule
 import re
 import urlparse
 import sys
 
-class GetSpider(CrawlSpider):
-    name="getMoive"
+class HaotorSpider(CrawlSpider):
+    name="haotor"
     allowed_domains=["www.haotor.com"]
     start_urls=["http://www.haotor.com"]
 
