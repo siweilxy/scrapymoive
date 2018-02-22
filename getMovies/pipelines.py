@@ -9,7 +9,7 @@ import logging
 import re
 import urllib2
 import MySQLdb
-
+import platform
 def insertIndb(seed,title):
     logging.critical("************************************db start************************************")
     db = MySQLdb.connect(host="192.168.1.16",port=3306,user="root", passwd="root",
@@ -36,6 +36,8 @@ def processHaotorItem(item):
             logging.critical(seed)
             f = urllib2.urlopen(seed)
             ts = "/home/siwei/torrent/"
+            if platform.system() =="Darwin":
+                ts="/Users/siwei/torrent/"
             tt = ts + title.strip()
             logging.critical(tt)
             with open(tt, "wb") as code:
