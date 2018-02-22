@@ -9,8 +9,22 @@ import logging
 import re
 import urllib2
 import MySQLdb
-import chardet
-import sys
+
+def insertIndb(seed,title):
+    logging.critical("************************************db start************************************")
+    db = MySQLdb.connect("192.168.1.16", "root", "root", "movies")
+    cursor = db.cursor()
+    sql = "INSERT INTO movie(url,title) VALUES ('%s','%s')" % (seed, title)
+    logging.critical(sql)
+    try:
+        cursor.execute(sql)
+        db.commit()
+    except Exception, ex:
+        logging.critical(ex, exc_info=1)
+        db.rollback()
+    db.close()
+    logging.critical("************************************db close************************************")
+
 class GetmoviesPipeline(object):
     def process_item(self, item, spider):
         #logging.critical(item)
@@ -27,17 +41,7 @@ class GetmoviesPipeline(object):
                 logging.critical(tt)
                 with open(tt,"wb") as code:
                     code.write(f.read())
-                    db=MySQLdb.connect("192.168.1.16","root","root","movies")
-                    cursor=db.cursor()
-                    sql="INSERT INTO movie(url,title) VALUES ('%s','%s')" % (seed,title)
-                    logging.critical(sql)
-                    try:
-                        cursor.execute(sql)
-                        db.commit()
-                    except Exception,ex:
-                        logging.critical(ex,exc_info=1)
-                        db.rollback()
+                insertIndb(seed,title)
                 logging.critical("************************************")
-                db.close()
         return item
 
