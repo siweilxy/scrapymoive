@@ -6,7 +6,9 @@
 # https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 
 from scrapy import signals
-
+import logging
+import re
+import scrapy
 
 class GetmoviesSpiderMiddleware(object):
     # Not all methods need to be defined. If a method is not defined,
@@ -23,17 +25,38 @@ class GetmoviesSpiderMiddleware(object):
     def process_spider_input(self, response, spider):
         # Called for each response that goes through the spider
         # middleware and into the spider.
-
         # Should return None or raise an exception.
         return None
 
+    """
+    def process_btttla_item(self,response,result):
+        for i in result:
+            logging.critical("process_btttla_item:%s"%i)
+            yield i
+    """
     def process_spider_output(self, response, result, spider):
         # Called with the results returned from the Spider, after
         # it has processed the response.
-
         # Must return an iterable of Request, dict or Item objects.
-        for i in result:
-            yield i
+        if spider.name == "haotor":
+            for i in result:
+                yield i
+        """
+        elif spider.name == "btttla":
+            logging.critical("222222222222222222222222222%s")
+            for i in result:
+                if type(i) is scrapy.http.request.Request:
+                    logging.critical("type is request%s"%i)
+                else:
+
+                    logging.critical("process_btttla_item:%s" % i['seed'][0])
+                yield i
+            #yield self.process_btttla_item(response=response,result=result)
+        else:
+            for i in result:
+                logging.critical("3333333")
+                yield i
+        """
 
     def process_spider_exception(self, response, exception, spider):
         # Called when a spider or process_spider_input() method

@@ -6,6 +6,8 @@ from scrapy.spiders import CrawlSpider,Rule
 import re
 import urlparse
 import sys
+import logging
+
 
 class HaotorSpider(CrawlSpider):
     name="haotor"
@@ -17,17 +19,15 @@ class HaotorSpider(CrawlSpider):
         sys.setdefaultencoding('utf-8')
         next_selector=response.xpath("//a/@href")
         for url in next_selector.extract():
+            #ogging.critical("url is %s"%url)
             yield Request(urlparse.urljoin(response.url,url))
-        selector=response.xpath("//a")
+
+        selector = response.xpath("//a")
         for s in selector:
             yield self.parse_item(s,response)
 
     def parse_item(self,selector,response):
         l=ItemLoader(item=GetmoviesItem(),selector=selector)
-        #l.add_xpath('title','./text()',MapCompose(unicode.strip,unicode.title))
-        #l.add_xpath('seed','./@href',MapCompose(lambda i:urlparse.urljoin(response.url,i)))
-
         l.add_xpath('title','./text()')
         l.add_xpath('seed','./@href')
-
         return l.load_item()

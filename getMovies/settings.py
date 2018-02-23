@@ -50,13 +50,13 @@ DOWNLOAD_DELAY = 1
 # Enable or disable spider middlewares
 # See https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 #SPIDER_MIDDLEWARES = {
-#    'getMovies.middlewares.GetmoviesSpiderMiddleware': 543,
+ #   'getMovies.middlewares.GetmoviesSpiderMiddleware': 543,
 #}
 
 # Enable or disable downloader middlewares
 # See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 #DOWNLOADER_MIDDLEWARES = {
-#    'getMovies.middlewares.GetmoviesDownloaderMiddleware': 543,
+ #   'getMovies.middlewares.GetmoviesDownloaderMiddleware': 543,
 #}
 
 # Enable or disable extensions
@@ -71,10 +71,10 @@ ITEM_PIPELINES = {
     'getMovies.pipelines.GetmoviesPipeline': 300,
 }
 LOG_LEVEL="INFO"
-DEPTH_LIMIT=10
-DEPTH_PRIORITY = 1
-SCHEDULER_DISK_QUEUE='scrapy.squeues.PickleFifoDiskQueue'
-SCHEDULER_MEMORY_QUEUE='scrapy.squeues.FifoMemoryQueue'
+DEPTH_LIMIT=5
+#DEPTH_PRIORITY = 1
+#SCHEDULER_DISK_QUEUE='scrapy.squeues.PickleFifoDiskQueue'
+#SCHEDULER_MEMORY_QUEUE='scrapy.squeues.FifoMemoryQueue'
 
 
 # Enable and configure the AutoThrottle extension (disabled by default)

@@ -14,8 +14,8 @@ def initLog():
 while(1):
     #initLog()
     logging.critical("*********************************************************")
-    #os.system("scrapy crawl haotor")
-    os.system("scrapy crawlall")
+    os.system("scrapy crawl haotor")
+    #os.system("scrapy crawlall")
     logging.critical("*********************************************************")
     time.sleep(1)
     i=i+1
