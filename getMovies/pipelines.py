@@ -10,7 +10,7 @@ import re
 import urllib2
 import MySQLdb
 import platform
-
+from scrapy.http import Request
 
 class GetmoviesPipeline(object):
 
@@ -27,24 +27,69 @@ class GetmoviesPipeline(object):
             self.db.rollback()
         logging.critical("************************************insert end************************************")
 
+    def savetorrent(self,seed,title):
+        if re.search(".torrent", title):
+            logging.critical("****************savetorrent start********************")
+            logging.critical(title)
+            logging.critical(seed)
+            f = urllib2.urlopen(seed)
+            ts = "/home/siwei/torrent/"
+            if platform.system() == "Darwin":
+                ts = "/Users/siwei/torrent/"
+            tt = ts + title.strip()
+            logging.critical(tt)
+            logging.critical("*****************write file start*******************")
+            with open(tt, "wb") as code:
+                code.write(f.read())
+            logging.critical("*****************write file end*******************")
+            self.insertIndb(seed, title)
+            logging.critical("*****************savetorrent end*******************")
+        elif re.search(".html",seed):
+            logging.critical("*****************other start*******************")
+            logging.critical(title)
+            logging.critical(seed)
+            logging.critical("*****************other end*****************")
+
+
     def processHaotorItem(self,item):
         if 'title' in item and 'seed' in item:
             title = item['title'][0]
             seed = item['seed'][0]
-            if re.search(".torrent", title):
-                logging.critical("************************************")
-                logging.critical(title)
-                logging.critical(seed)
-                f = urllib2.urlopen(seed)
-                ts = "/home/siwei/torrent/"
-                if platform.system() == "Darwin":
-                    ts = "/Users/siwei/torrent/"
-                tt = ts + title.strip()
-                logging.critical(tt)
-                with open(tt, "wb") as code:
-                    code.write(f.read())
-                self.insertIndb(seed, title)
-                logging.critical("************************************")
+            self.savetorrent(seed,title)
+        elif 'seed' in item:
+            seed=item['seed'][0]
+            title="unknown"
+            self.savetorrent(seed,title)
+
+    def processBttlaItem(self,item):
+        if 'title' in item and 'seed' in item:
+            title = item['title'][0]
+            seed = "https://www.bttt.la" + item['seed'][0]
+            if re.search(".txt", seed):
+                logging.critical("this is txt")
+            elif re.search(".html", seed):
+                logging.critical("******************html start**********************")
+                logging.critical("this is html")
+                logging.critical("******************html end************************")
+            elif re.search(".xml", seed):
+                logging.critical("this is xml")
+            logging.critical(title)
+            logging.critical(seed)
+        elif 'seed' in item:
+            title = "unknown"
+            seed = "https://www.bttt.la" + item['seed'][0]
+            if re.search(".txt", seed):
+                logging.critical("this is txt")
+            elif re.search(".html", seed):
+                logging.critical("******************html start no title**********************")
+
+                logging.critical("this is html")
+                logging.critical("******************html end no title**********************")
+
+            elif re.search(".xml", seed):
+                logging.critical("this is xml")
+            logging.critical(title)
+            logging.critical(seed)
 
     def __init__(self):
         logging.critical("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!db connected!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
@@ -55,14 +100,7 @@ class GetmoviesPipeline(object):
         if spider.name == "haotor":
             self.processHaotorItem(item)
         elif spider.name == "btttla":
-            title=item['title'][0]
-            seed= "https://www.bttt.la"+item['seed'][0]
-            logging.critical("+++++++++++++++++++++++++++++++++++++++++++")
-            logging.critical(spider.name)
-            logging.critical(title)
-            logging.critical(seed)
-            logging.critical("+++++++++++++++++++++++++++++++++++++++++++")
-
+            self.processBttlaItem(item)
         return item
 
     def close_spider(self):

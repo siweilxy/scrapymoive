@@ -7,6 +7,7 @@ import re
 import urlparse
 import sys
 
+
 class HaotorSpider(CrawlSpider):
     name="btttla"
     allowed_domains=["www.bttt.la"]
@@ -18,16 +19,12 @@ class HaotorSpider(CrawlSpider):
         next_selector=response.xpath("//a/@href")
         for url in next_selector.extract():
             yield Request(urlparse.urljoin(response.url,url))
-
         selector=response.xpath("//a")
         for s in selector:
             yield self.parse_item(s,response)
 
     def parse_item(self,selector,response):
         l=ItemLoader(item=GetmoviesItem(),selector=selector)
-        #l.add_xpath('title','./text()',MapCompose(unicode.strip,unicode.title))
-        #l.add_xpath('seed','./@href',MapCompose(lambda i:urlparse.urljoin(response.url,i)))
-
         l.add_xpath('title','./text()')
         l.add_xpath('seed','./@href')
 

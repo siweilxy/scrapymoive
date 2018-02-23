@@ -18,7 +18,6 @@ class HaotorSpider(CrawlSpider):
         next_selector=response.xpath("//a/@href")
         for url in next_selector.extract():
             yield Request(urlparse.urljoin(response.url,url))
-
         selector=response.xpath("//a")
         for s in selector:
             yield self.parse_item(s,response)

@@ -1,5 +1,4 @@
 from scrapy.commands import ScrapyCommand
-from scrapy.utils.project import get_project_settings
 import logging
 
 
@@ -18,3 +17,13 @@ class Command(ScrapyCommand):
         for name in spider_list:
             self.crawler_process.crawl(name,**opts.__dict__)
         self.crawler_process.start()
+
+    #def __init__(self):
+     #   configure_logging(install_root_handler=False)
+      #  logging.basicConfig(
+       #     format='%(filename)s[line:%(lineno)d]',
+        #)
+        #logging.basicConfig(format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
+         #                   datefmt='%a, %d %b %Y %H:%M:%S',
+          #                  filemode='w')
+        #logging.critical("set logging config")
