@@ -1,4 +1,5 @@
 from getMovies.items import GetmoviesItem
+from getMovies.redis import redisoperator
 from scrapy.loader import ItemLoader
 from scrapy.http import Request
 from scrapy.loader.processors import MapCompose,Join
@@ -7,7 +8,7 @@ import re
 import urlparse
 import sys
 import logging
-
+import redis
 
 class HaotorSpider(CrawlSpider):
     name="haotor"
@@ -17,11 +18,16 @@ class HaotorSpider(CrawlSpider):
     def parse(self, response):
         reload(sys)
         sys.setdefaultencoding('utf-8')
+        baseUrl= "http://www.haotor.com"
+        r = redis.Redis(host='192.168.1.16', port=6379, db=0)
         next_selector=response.xpath("//a/@href")
         for url in next_selector.extract():
-            #ogging.critical("url is %s"%url)
-            yield Request(urlparse.urljoin(response.url,url))
-
+            if r.get(url) is None and url != baseUrl:
+                if url == baseUrl:
+                    logging.critical("this is baseurl")
+                r.set(url,1)
+                yield Request(urlparse.urljoin(response.url,url))
+        #yield Request(urlparse.urljoin(response.url, "http://www.haotor.com"))
         selector = response.xpath("//a")
         for s in selector:
             yield self.parse_item(s,response)

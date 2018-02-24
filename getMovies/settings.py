@@ -71,10 +71,10 @@ ITEM_PIPELINES = {
     'getMovies.pipelines.GetmoviesPipeline': 300,
 }
 LOG_LEVEL="INFO"
-DEPTH_LIMIT=5
-#DEPTH_PRIORITY = 1
-#SCHEDULER_DISK_QUEUE='scrapy.squeues.PickleFifoDiskQueue'
-#SCHEDULER_MEMORY_QUEUE='scrapy.squeues.FifoMemoryQueue'
+DEPTH_LIMIT=20
+DEPTH_PRIORITY = 1
+SCHEDULER_DISK_QUEUE='scrapy.squeues.PickleFifoDiskQueue'
+SCHEDULER_MEMORY_QUEUE='scrapy.squeues.FifoMemoryQueue'
 
 
 # Enable and configure the AutoThrottle extension (disabled by default)
