@@ -14,6 +14,17 @@ from scrapy.http import Request
 
 class GetmoviesPipeline(object):
 
+    def checkIndb(self,title):
+        cursor = self.db.cursor()
+        sql="select title from movie where title = '%s'" % (title)
+        try:
+            cursor.execute(sql)
+            return type(cursor.fetchall())
+        except Exception,ex:
+            logging.critical(ex,exc_info=1)
+            return 0
+
+
     def insertIndb(self,seed, title):
         #logging.critical("************************************insert start************************************")
         cursor = self.db.cursor()
@@ -42,7 +53,10 @@ class GetmoviesPipeline(object):
             with open(tt, "wb") as code:
                 code.write(f.read())
             #logging.critical("*****************write file end*******************")
-            self.insertIndb(seed, title)
+            if self.checkIndb(title=title) is 0:
+                self.insertIndb(seed, title)
+            else:
+                logging.critical("this is in DB!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
             #logging.critical("*****************savetorrent end*******************")
 
 
