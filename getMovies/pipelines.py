@@ -26,7 +26,7 @@ class GetmoviesPipeline(object):
 
 
     def insertIndb(self,seed, title):
-        #logging.critical("************************************insert start************************************")
+        logging.critical("************************************insert db start************************************")
         cursor = self.db.cursor()
         sql = "INSERT INTO movie(url,title) VALUES ('%s','%s')" % (seed, title)
         #logging.critical(sql)
@@ -36,7 +36,7 @@ class GetmoviesPipeline(object):
         except Exception, ex:
             logging.critical(ex, exc_info=1)
             self.db.rollback()
-        #logging.critical("************************************insert end************************************")
+        logging.critical("************************************insert db end************************************")
 
     def savetorrent(self,seed,title):
         if re.search(".torrent", title):
@@ -49,10 +49,10 @@ class GetmoviesPipeline(object):
                 ts = "/Users/siwei/torrent/"
             tt = ts + title.strip()
             #logging.critical(tt)
-            #logging.critical("*****************write file start*******************")
+            logging.critical("*****************write file start*******************")
             with open(tt, "wb") as code:
                 code.write(f.read())
-            #logging.critical("*****************write file end*******************")
+            logging.critical("*****************write file end*******************")
             if self.checkIndb(title=title) is 0:
                 self.insertIndb(seed, title)
             else:
