@@ -53,7 +53,7 @@ class GetmoviesPipeline(object):
             with open(tt, "wb") as code:
                 code.write(f.read())
             logging.critical("*****************write file end*******************")
-            if self.checkIndb(title=title) is 0:
+            if self.checkIndb(title=title) == 0:
                 self.insertIndb(seed, title)
             else:
                 logging.critical("this is in DB!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
